@@ -7,18 +7,22 @@ class Database {
     private $connection;
     
     private function __construct() {
-        $host = 'localhost';
-        $dbname = 'ecom_storage';
-        $username = 'root';
-        $password = '';
-        $charset = 'utf8mb4';
+        // Use environment variables when available
+        $host = defined('DB_HOST') ? DB_HOST : (Env::get('DB_HOST', 'localhost'));
+        $dbname = Env::get('DB_NAME', 'ecom_storage');
+        $username = Env::get('DB_USER', 'root');
+        $password = Env::get('DB_PASS', '');
+        $charset = Env::get('DB_CHARSET', 'utf8mb4');
         
         try {
             $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
-            $this->connection = new PDO($dsn, $username, $password);
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-            $this->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            $options = [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false,
+            ];
+
+            $this->connection = new PDO($dsn, $username, $password, $options);
         } catch (PDOException $e) {
             die("Erreur de connexion : " . $e->getMessage());
         }
