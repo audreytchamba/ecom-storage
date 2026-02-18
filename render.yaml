@@ -2,6 +2,7 @@ services:
   - type: web
     name: ecom-storage
     env: docker
+<<<<<<< HEAD
     plan: free
     branch: main
     region: oregon
@@ -15,3 +16,38 @@ services:
         value: false
       - key: DB_CHARSET
         value: utf8mb4
+=======
+    region: oregon
+    plan: free
+    dockerfile: ./Dockerfile
+    
+    # Pre-deployment commands
+    preDeployCommand: |
+      # Create .env file if it doesn't exist
+      if [ ! -f .env ]; then
+        cp .env.example .env
+      fi
+
+envVars:
+  - key: PORT
+    value: "80"
+  - key: DB_HOST
+    generateValue: false
+    value: localhost
+  - key: DB_NAME
+    value: ecom_storage
+  - key: DB_USER
+    value: root
+  - key: DB_PASS
+    generateValue: true
+  - key: DB_CHARSET
+    value: utf8mb4
+  - key: APP_ENV
+    value: production
+  - key: APP_DEBUG
+    value: "false"
+  - key: APP_URL
+    fromDatabase:
+      name: ecom-storage
+      property: url
+>>>>>>> 04a9d21491311187f827d9bafa22fcdeec08c8e6

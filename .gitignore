@@ -2,6 +2,32 @@
 config/database.php
 
 # Uploads
+uploads/
+!uploads/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+vendor/
+node_modules/
+
+# Logs
+*.log
+
+# Environment
+.env
+# Configuration
+config/database.php
+
+# Uploads
 uploads/*
 !uploads/.gitkeep
 
