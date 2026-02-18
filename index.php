@@ -4,9 +4,23 @@
  */
 session_start();
 
-// Configuration
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Load environment variables (optional .env)
+require_once __DIR__ . '/core/Env.php';
+try {
+    Env::load(__DIR__ . '/.env');
+} catch (Exception $e) {
+    // .env missing or unreadable — continue with defaults
+}
+
+// Configuration: control error display from APP_DEBUG
+$debug = Env::get('APP_DEBUG', 'false');
+if (in_array(strtolower($debug), ['1', 'true', 'on'])) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+} else {
+    error_reporting(0);
+    ini_set('display_errors', 0);
+}
 
 // Autoloader
 spl_autoload_register(function ($class) {
